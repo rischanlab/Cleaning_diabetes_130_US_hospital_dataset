@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
 
-engine = create_engine(r'postgresql+psycopg2://postgres:xxx@localhost:5432/xxx')
+engine = create_engine(r'postgresql+psycopg2://postgres:xx@localhost:5432/xx')
 
 
 # read the file and create a pandas dataframe
@@ -55,16 +55,18 @@ data.drop(['metformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepi
 
 # why we remove those features? just plot it or check the count. E.g., miglitol: all data are filled by No
 
+data = data.rename(columns={"A1Cresult": "a1cresult", "diabetesMed": "diabetesmed"})
+
 # Export to csv
 print("exporting to csv")
-data.to_csv('diab_clean.csv',index=True)
+data.to_csv('diab_clean_version.csv',index=True)
 
 
 #Export to postgre
 print("exporting to postgre table")
 c = engine.connect()
 conn = c.connection
-data.to_sql('diab_clean', engine)
+data.to_sql('diab_clean_version', engine)
 
 conn.close()
 
